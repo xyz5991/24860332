@@ -1,0 +1,1273 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "ErrBnB API",
+    "version": "1.0.0",
+    "description": "The ErrBnb API for the 26/27 Full Stack Web Development Assignment. For help on getting started, refer to the assignment breif, teaching material, or contact Ash.",
+    "contact": {
+      "name": "Ashley Williams",
+      "email": "ashley.williams@mmu.ac.uk"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3333/"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Users"
+    },
+    {
+      "name": "Properties"
+    },
+    {
+      "name": "Images"
+    },
+    {
+      "name": "Bookings"
+    },
+    {
+      "name": "Reviews"
+    }
+  ],
+  "paths": {
+    "/users": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Register a new user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddUserRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddUserResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Login",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      }
+    },
+    "/logout": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "security": [
+          {
+            "User": []
+          }
+        ],
+        "summary": "Logout",
+        "responses": {
+          "204": {
+            "description": "Logged out"
+          },
+          "401": {
+            "description": "Unauthorised"
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      }
+    },
+    "/users/{user_id}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get a users profile information",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/user_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      }
+    },
+    "/amenities": {
+      "get": {
+        "tags": [
+          "Properties"
+        ],
+        "summary": "Get list of amenities",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AmenitiesList"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      }
+    },
+    "/properties": {
+      "get": {
+        "tags": [
+          "Properties"
+        ],
+        "summary": "Search properties",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "city",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "maxPrice",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "guests",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "ownedBy",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of matching properties",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PropertyList"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Properties"
+        ],
+        "security": [
+          {
+            "User": []
+          }
+        ],
+        "summary": "Create property",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PropertyCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Property created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PropertyCreateResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorised"
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      }
+    },
+    "/properties/{property_id}": {
+      "get": {
+        "tags": [
+          "Properties"
+        ],
+        "summary": "View property details",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/property_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PropertyDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Properties"
+        ],
+        "security": [
+          {
+            "User": []
+          }
+        ],
+        "summary": "Update property",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/property_id"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PropertyUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorised"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      }
+    },
+    "/properties/{property_id}/images": {
+      "get": {
+        "tags": [
+          "Images"
+        ],
+        "summary": "Get property images",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/property_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PropertyImageList"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Images"
+        ],
+        "security": [
+          {
+            "User": []
+          }
+        ],
+        "summary": "Upload property image",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/property_id"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "image/png": {
+              "schema": {
+                "$ref": "#/components/schemas/BinaryImageFile"
+              }
+            },
+            "image/jpeg": {
+              "schema": {
+                "$ref": "#/components/schemas/BinaryImageFile"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Uploaded"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorised"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      }
+    },
+    "/properties/{property_id}/bookings": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/property_id"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Bookings"
+        ],
+        "security": [
+          {
+            "User": []
+          }
+        ],
+        "summary": "Check Availability",
+        "responses": {
+          "200": {
+            "description": "List of bookings",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookingList"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorised"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Bookings"
+        ],
+        "security": [
+          {
+            "User": []
+          }
+        ],
+        "summary": "Create booking",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookingCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Booking confirmed"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorised"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "409": {
+            "description": "Dates unavailable"
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      }
+    },
+    "/bookings": {
+      "get": {
+        "tags": [
+          "Bookings"
+        ],
+        "security": [
+          {
+            "User": []
+          }
+        ],
+        "summary": "View my bookings",
+        "responses": {
+          "200": {
+            "description": "List of my bookings",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookingList"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorised"
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      }
+    },
+    "/bookings/{booking_id}": {
+      "get": {
+        "tags": [
+          "Bookings"
+        ],
+        "security": [
+          {
+            "User": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/booking_id"
+          }
+        ],
+        "summary": "View booking",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookingDetail"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorised"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Bookings"
+        ],
+        "security": [
+          {
+            "User": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/booking_id"
+          }
+        ],
+        "summary": "Cancel booking",
+        "responses": {
+          "204": {
+            "description": "Cancelled"
+          },
+          "401": {
+            "description": "Unauthorised"
+          },
+          "403": {
+            "description": "Forbidden - cannot delete a booking unless you are the property owner or the user who made the booking"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      }
+    },
+    "/properties/{property_id}/reviews": {
+      "get": {
+        "tags": [
+          "Reviews"
+        ],
+        "summary": "View reviews",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/property_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PropertyReviewList"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Reviews"
+        ],
+        "security": [
+          {
+            "User": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/property_id"
+          }
+        ],
+        "summary": "Leave review",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Review created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorised"
+          },
+          "403": {
+            "description": "Forbidden - you can not review on bookings you did not make"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "user_id": {
+        "name": "user_id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "integer"
+        }
+      },
+      "property_id": {
+        "in": "path",
+        "name": "property_id",
+        "required": true,
+        "schema": {
+          "type": "integer"
+        }
+      },
+      "booking_id": {
+        "in": "path",
+        "name": "booking_id",
+        "required": true,
+        "schema": {
+          "type": "integer"
+        }
+      }
+    },
+    "schemas": {
+      "securitySchemes": null,
+      "User": {
+        "type": "string",
+        "name": "X-Authorization",
+        "in": "header"
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error_message": {
+            "type": "string",
+            "examples": [
+              "Relevant error message goes in here"
+            ]
+          }
+        }
+      },
+      "AddUserRequest": {
+        "type": "object",
+        "required": [
+          "first_name",
+          "last_name",
+          "email",
+          "password"
+        ],
+        "properties": {
+          "first_name": {
+            "type": "string"
+          },
+          "last_name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "description": "Between 8 and 30 chars, one upper, one lower, one special"
+          }
+        }
+      },
+      "AddUserResponse": {
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "integer"
+          }
+        }
+      },
+      "LoginRequest": {
+        "type": "object",
+        "required": [
+          "email",
+          "password"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "LoginResponse": {
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "integer",
+            "examples": [
+              14
+            ]
+          },
+          "session_token": {
+            "type": "string",
+            "exampls": [
+              "b5d9e7be6c97aa855f721b6e742120f2"
+            ]
+          }
+        }
+      },
+      "UserDetails": {
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "integer",
+            "examples": [
+              14
+            ]
+          },
+          "first_name": {
+            "type": "string",
+            "examples": [
+              "Ash"
+            ]
+          },
+          "last_name": {
+            "type": "string",
+            "examples": [
+              "Williams"
+            ]
+          },
+          "properties": {
+            "type": "array"
+          },
+          "reviews": {
+            "type": "array"
+          },
+          "bookings": {
+            "type": "array"
+          }
+        }
+      },
+      "AmenitiesList": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Amenity"
+        }
+      },
+      "Amenity": {
+        "type": "object",
+        "properties": {
+          "amenity_id": {
+            "type": "integer",
+            "examples": [
+              1,
+              2,
+              3,
+              4
+            ]
+          },
+          "name": {
+            "type": "array",
+            "examples": [
+              "Self checkin",
+              "Pet friendly",
+              "Hottub",
+              "Stocked fridge"
+            ]
+          }
+        }
+      },
+      "PropertyCreate": {
+        "type": "object",
+        "required": [
+          "title",
+          "description",
+          "address",
+          "city",
+          "post_code",
+          "country",
+          "price_per_night",
+          "max_guests",
+          "bedrooms",
+          "bathrooms",
+          "amenities"
+        ],
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "post_code": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "price_per_night": {
+            "type": "number"
+          },
+          "max_guests": {
+            "type": "integer"
+          },
+          "bedrooms": {
+            "type": "integer"
+          },
+          "bathrooms": {
+            "type": "integer"
+          },
+          "amenities": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        }
+      },
+      "PropertyCreateResponse": {
+        "type": "object",
+        "properties": {
+          "property_id": {
+            "type": "integer"
+          }
+        }
+      },
+      "PropertyUpdate": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "post_code": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "price_per_night": {
+            "type": "number"
+          },
+          "max_guests": {
+            "type": "integer"
+          },
+          "bedrooms": {
+            "type": "integer"
+          },
+          "bathrooms": {
+            "type": "integer"
+          }
+        }
+      },
+      "PropertyList": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/PropertyBreif"
+        }
+      },
+      "PropertyBreif": {
+        "type": "object",
+        "properties": {
+          "property_id": {
+            "type": "integer"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "price_per_night": {
+            "type": "number"
+          },
+          "max_guests": {
+            "type": "integer"
+          },
+          "bedrooms": {
+            "type": "integer"
+          },
+          "average_rating": {
+            "type": "number",
+            "min": 0,
+            "max": 5
+          }
+        }
+      },
+      "PropertyDetails": {
+        "type": "object",
+        "properties": {
+          "property_id": {
+            "type": "integer"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "price_per_night": {
+            "type": "number"
+          },
+          "max_guests": {
+            "type": "integer"
+          },
+          "bedrooms": {
+            "type": "integer"
+          },
+          "bathrooms": {
+            "type": "integer"
+          },
+          "average_rating": {
+            "type": "number",
+            "min": 0,
+            "max": 5
+          },
+          "host": {
+            "type": "object",
+            "properties": {
+              "host_id": {
+                "type": "integer"
+              },
+              "first_name": {
+                "type": "string"
+              },
+              "last_name": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string"
+              }
+            }
+          },
+          "available_since": {
+            "type": "string",
+            "format": "date"
+          },
+          "amenities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AmenitiesList"
+            }
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PropertyImageList"
+            }
+          },
+          "reviews": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PropertyReviewList"
+            }
+          }
+        }
+      },
+      "PropertyImageList": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/ImageDetails"
+        }
+      },
+      "ImageDetails": {
+        "type": "object",
+        "properties": {
+          "image_id": {
+            "type": "integer"
+          },
+          "image_url": {
+            "type": "string"
+          }
+        }
+      },
+      "PropertyReviewList": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/ReviewDetails"
+        }
+      },
+      "ReviewDetails": {
+        "type": "object",
+        "properties": {
+          "booking_id": {
+            "type": "integer"
+          },
+          "guest_id": {
+            "type": "integer"
+          },
+          "guest_first_name": {
+            "type": "string"
+          },
+          "rating": {
+            "type": "integer",
+            "min": 0,
+            "max": 5
+          },
+          "comment": {
+            "type": "string"
+          },
+          "review_date": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      },
+      "BinaryImageFile": {
+        "type": "string",
+        "format": "binary",
+        "description": "The raw content of the JPEG or PNG image file."
+      },
+      "BookingList": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/BookingDetail"
+        }
+      },
+      "BookingDetail": {
+        "type": "object",
+        "properties": {
+          "booking_id": {
+            "type": "integer"
+          },
+          "property_id": {
+            "type": "integer"
+          },
+          "property_details": {
+            "$ref": "#/components/schemas/PropertyBreif"
+          },
+          "guest_id": {
+            "type": "integer"
+          },
+          "guest_first_name": {
+            "type": "string"
+          },
+          "guest_last_name": {
+            "type": "string"
+          },
+          "guest_email": {
+            "type": "string"
+          },
+          "check_in": {
+            "type": "string",
+            "format": "date"
+          },
+          "check_out": {
+            "type": "string",
+            "format": "date"
+          },
+          "total_price": {
+            "type": "number"
+          },
+          "status": {
+            "type": "string"
+          },
+          "booked_at": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      },
+      "BookingCreate": {
+        "type": "object",
+        "required": [
+          "propertyId",
+          "checkIn",
+          "checkOut"
+        ],
+        "properties": {
+          "propertyId": {
+            "type": "integer"
+          },
+          "checkIn": {
+            "type": "string",
+            "format": "date"
+          },
+          "checkOut": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      },
+      "ReviewCreate": {
+        "type": "object",
+        "required": [
+          "bookingId",
+          "rating"
+        ],
+        "properties": {
+          "bookingId": {
+            "type": "integer"
+          },
+          "rating": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "comment": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

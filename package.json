@@ -1,0 +1,41 @@
+{
+  "name": "errbnb",
+  "version": "1.0.0",
+  "description": "ErrBnb Backend Server",
+  "homepage": "https://github.com/ash-williams/errbnb#readme",
+  "bugs": {
+    "url": "https://github.com/ash-williams/errbnb/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ash-williams/errbnb.git"
+  },
+  "license": "MIT",
+  "author": "Ash Williams",
+  "type": "commonjs",
+  "main": "server.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "dev": "nodemon server.js",
+    "pretest": "npm run wipe",
+    "test": "mocha ./tests/test.*.js --reporter spec --log-level=warn --timeout 10000",
+    "wipe": "mocha ./tests/database.refresh.js --reporter spec --log-level=warn --timeout 10000"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "joi": "^18.2.3",
+    "morgan": "^1.11.0",
+    "multer": "^2.2.0",
+    "nodemon": "^3.1.14",
+    "sqlite3": "^6.0.1",
+    "swagger-ui-express": "^5.0.1"
+  },
+  "devDependencies": {
+    "chai": "^6.2.2",
+    "mocha": "^11.7.6",
+    "supertest": "^7.2.2"
+  }
+}
