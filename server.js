@@ -41,11 +41,11 @@ app.get('/', (req, res, next) => {
 
 // Other API endpoints: Links go here...
 // You can uncomment the below four lines as you implement the functionality - we'll discuss this structure in week three.
-// require('./app/routes/users.server.routes')(app);
-// require('./app/routes/properties.server.routes')(app);
-// require('./app/routes/images.server.routes')(app);
-// require('./app/routes/bookings.server.routes')(app);
-// require('./app/routes/reviews.server.routes')(app);
+require('./app/routes/users.server.routes')(app);
+require('./app/routes/properties.server.routes')(app);
+require('./app/routes/images.server.routes')(app);
+require('./app/routes/bookings.server.routes')(app);
+require('./app/routes/reviews.server.routes')(app);
 
 
 // Default response for any other request
